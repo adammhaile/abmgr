@@ -1,0 +1,22 @@
+#run as root user
+docker run -d --name=audiobookshelf \
+-p 13378:80 \
+-e PUID=1024 \
+-e PGID=100 \
+-v /volume1/docker/audiobookshelf:/config \
+-v /volume1/Main/Data/AudioBooks/AudioBookShelf/audiobooks:/audiobooks \
+-v /volume1/Main/Data/AudioBooks/AudioBookShelf/metadata:/metadata \
+--restart always \
+advplyr/audiobookshelf:latest
+
+docker run -d --rm -it -v $HOME/OpenAudible:/config/OpenAudible -p 3000:3000 -e PGID=`id -g` -e PUID=`id -u` --name openaudible openaudible/openaudible:latest
+docker run -d --name=openaudible \
+-p 13379:80 \
+-e PUID=1024 \
+-e PGID=100 \
+-v /volume1/docker/audiobookshelf:/config/OpenAudible \
+--restart always \
+openaudible/openaudible:latest
+
+DSM 7.1.1-42962 Update 5
+SMB Service 4.15.9-0632
